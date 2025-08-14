@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  font-family: 'Bebas Neue', sans-serif;
+  color: #f5f5f5;
+  height: 100vh;
+}
+.character-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+  color: #fff;
+}
+
+.character-content h2 {
+  font-size: 48px;
+  color: #ff0055;
+  margin-bottom: 30px;
+}
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-img {
+  width: 100px;
+  height: 300px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
+  margin-bottom: 20px;
+}
+
+.avatar-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-selector select {
+  font-size: 18px;
+  padding: 5px;
+  margin-bottom: 10px;
+  background-color: #222;
+  color: #fff;
+  border: 1px solid #ff0055;
+  border-radius: 5px;
+}
+
+.avatar-selector button {
+  font-size: 18px;
+  padding: 8px 16px;
+  background-color: #ff0055;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.stats {
+  margin-top: 30px;
+  font-size: 24px;
+}
+
+.stats p {
+  margin: 10px 0;
+}
+.avatar-gallery {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.avatar-gallery h3 {
+  font-size: 28px;
+  color: #ff0055;
+  margin-bottom: 20px;
+}
+
+.avatar-options {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.avatar-options img {
+  width: 100px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.avatar-options img:hover {
+  transform: scale(1.1);
+  border-color: #ff0055;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="icon" href="./favicon.webp" type="image/x-icon">
+    <link rel="stylesheet" href="styleHome.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="top-bar">
+    <div class="title">Home</div>
+    <nav class="nav-icons">
+      <a href="index.html" title="Home">🏠</a>
+      <a href="character.html" title="Character">🧍</a>
+      <a href="setting.html" title="Settings">⚙️</a>
+    </nav>
+  </header>
+
+  <main class="home-content">
+    <button class="fight-button" onclick="startFight()">FIGHT!</button>
+  </main>
+
+  <script>
+    function startFight() {
+      window.location.href = 'fight.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  font-family: 'Bebas Neue', sans-serif;
+  color: #f5f5f5;
+  height: 100vh;
+}
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.settings-content h2 {
+  font-size: 42px;
+  color: #ff0055;
+  margin-bottom: 20px;
+}
+
+.settings-content input {
+  width: 300px;
+  height: 40px;
+  font-size: 20px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #444;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.settings-content button {
+  width: 300px;
+  height: 45px;
+  font-size: 22px;
+  background-color: #ff0055;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.settings-content button:hover {
+  background-color: #ff3366;
+  transform: scale(1.05);
+}
+
+#currentNameDisplay {
+  margin-top: 20px;
+  font-size: 24px;
+  color: #f5f5f5;
+}
+#battle-log {
+  font-family: 'Roboto Mono', monospace;
+  background: #111;
+  color: #eee;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.log-name {
+  color: #ff0055;
+  font-weight: bold;
+}
+
+.log-zone {
+  color: #00ffff;
+}
+
+.log-damage {
+  color: #ffcc00;
+}
+
+.log-critical {
+  color: #ff0000;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff0000;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="./favicon.webp" type="image/x-icon">
+    <link rel="stylesheet" href="styleSet.css">
+</head>
+<body>
+  <main class="battle-container">
+    <section class="character-panel">
+      <h2>Игрок: <span id="player-name">22</span></h2>
+      <div class="health-bar">
+        <div id="player-health" class="health-fill"></div>
+      </div>
+      <div class="zone-select">
+        <h3>Атака</h3>
+        <div class="zones" id="attack-zones">
+          <!-- Зоны атаки -->
+        </div>
+        <h3>Защита (выбери 2)</h3>
+        <div class="zones" id="defense-zones">
+          <!-- Зоны защиты -->
+        </div>
+      </div>
+    </section>
+
+    <section class="enemy-panel">
+      <h2>Противник: <span id="enemy-name">???</span></h2>
+      <div class="health-bar">
+        <div id="enemy-health" class="health-fill"></div>
+      </div>
+      <div class="enemy-avatar">
+        <img id="enemy-avatar" src="enemy-default.png" alt="Enemy Avatar" />
+      </div>
+    </section>
+
+    <section class="battle-controls">
+      <button id="attack-button" disabled>Атаковать</button>
+    </section>
+
+    <section class="battle-log">
+      <h3>Лог боя</h3>
+      <div id="battle-log"></div>
+    </section>
+  </main>
+
+  <script src="fight.js"></script>
+</body>
+</html>

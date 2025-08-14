@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styleReg.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="icon" href="./favicon.webp" type="image/x-icon">
+</head>
+<body>
+<div class="registration">
+  <img src="./favicon.webp" alt="favicon">
+  <h2>Create Your Character</h2>
+  <label class="characterName" for="characterName">Character Name:</label>
+  <input type="text" id="characterName" placeholder="Enter your character's name">
+  <button onclick="createCharacter()">Create Character</button>
+</div>
+
+<script>
+  function createCharacter() {
+    const name = document.getElementById('characterName').value;
+    if (name.trim() !== '') {
+      localStorage.setItem('characterName', name);
+      alert(`Character ${name} created!`);
+      // Перейти на домашнюю страницу
+       window.location.href = 'index.html'; 
+    } else {
+      alert('Please enter a valid name.');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="./favicon.webp" type="image/x-icon">
+    <link rel="stylesheet" href="styleSet.css">
+ <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  
+</head>
+<body>
+  <header class="top-bar">
+    <div class="title">Settings</div>
+    <nav class="nav-icons">
+      <a href="index.html" title="Home">🏠</a>
+      <a href="character.html" title="Character">🧍</a>
+      <a href="setting.html" title="Settings">⚙️</a>
+    </nav>
+  </header>
+
+  <main class="settings-content">
+    <h2>Change Player Name</h2>
+    <input type="text" id="newName" placeholder="Enter new name">
+    <button onclick="updateName()">Save Name</button>
+    <p id="currentNameDisplay"></p>
+  </main>
+
+  <script>
+    // Отображение текущего имени
+    const currentName = localStorage.getItem('characterName');
+    if (currentName) {
+      document.getElementById('currentNameDisplay').textContent = `Current Name: ${currentName}`;
+    }
+
+    // Обновление имени
+    function updateName() {
+      const newName = document.getElementById('newName').value.trim();
+      if (newName !== '') {
+        localStorage.setItem('characterName', newName);
+        alert(`Name updated to ${newName}`);
+        document.getElementById('currentNameDisplay').textContent = `Current Name: ${newName}`;
+      } else {
+        alert('Please enter a valid name.');
+      }
+    }
+  </script>
+</body>
+</html>
