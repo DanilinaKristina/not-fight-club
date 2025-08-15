@@ -127,3 +127,27 @@ body {
   transform: scale(1.2);
   color: #ff0055;
 }
+#reset-battle-btn, #new-battle-btn {
+    padding: 10px 15px;
+    font-size: 16px;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+#reset-battle-btn:hover, #new-battle-btn:hover {
+    background: #ffa726;
+    transform: scale(1.05);
+}
+
+#new-battle-btn {
+    background: #2196F3;
+}
+
+#new-battle-btn:hover {
+    background: #42A5F5;
+}
