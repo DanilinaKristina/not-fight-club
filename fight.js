@@ -3,10 +3,10 @@ const ZONES = ['Голова', 'Тело', 'Ноги'];
 const ENEMIES = [
     { name: 'Враг 1', avatar: 'enemy1.jpg', health: 80, attackZones: 1, defenseZones: 2 },
     { name: 'Враг 2', avatar: 'enemy2.jpg', health: 120, attackZones: 1, defenseZones: 1 },
-    { name: 'Враг 3', avatar: 'enemy3.jpg', health: 150, attackZones: 1, defenseZones: 3 },
+    { name: 'Враг 3', avatar: 'enemy3.jpg', health: 150, attackZones: 1, defenseZones: 2 },
     { name: 'Враг 4', avatar: 'enemy4.jpg', health: 90, attackZones: 2, defenseZones: 1 },
     { name: 'Враг 5', avatar: 'enemy5.jpg', health: 200, attackZones: 1, defenseZones: 2 },
-    { name: 'Враг 6', avatar: 'enemy6.jpg', health: 100, attackZones: 3, defenseZones: 2 }
+    { name: 'Враг 6', avatar: 'enemy6.jpg', health: 100, attackZones: 2, defenseZones: 2 }
 ];
 
 let gameState = {
@@ -51,7 +51,7 @@ function loadPlayerData() {
 function updatePlayerAvatar() {
     const playerAvatarElement = document.getElementById('player-avatar');
     if (playerAvatarElement) {
-        const savedAvatar = localStorage.getItem('characterAvatar') || './avatar1.gif';
+        const savedAvatar = localStorage.getItem('characterAvatar') || './avatar11.jpg';
         playerAvatarElement.src = savedAvatar;
         console.log('Аватар игрока загружен:', savedAvatar);
     }
@@ -119,6 +119,8 @@ function setupEventListeners() {
     const enemySelect = document.getElementById('enemy-select');
     const startBattleBtn = document.getElementById('start-battle-btn');
     const attackButton = document.getElementById('attack-button');
+    const resetBattleBtn = document.getElementById('reset-battle-btn');
+    const newBattleBtn = document.getElementById('new-battle-btn');
     
     if (enemySelect) {
         enemySelect.addEventListener('change', handleEnemySelect);
@@ -133,6 +135,16 @@ function setupEventListeners() {
     if (attackButton) {
         attackButton.addEventListener('click', executeBattleRound);
         console.log('Обработчик атаки добавлен');
+    }
+    
+    if (resetBattleBtn) {
+        resetBattleBtn.addEventListener('click', resetCurrentBattle);
+        console.log('Обработчик сброса боя добавлен');
+    }
+    
+    if (newBattleBtn) {
+        newBattleBtn.addEventListener('click', startNewBattle);
+        console.log('Обработчик нового боя добавлен');
     }
 }
 
@@ -201,20 +213,90 @@ function startBattle() {
         enemyAvatarElement.src = gameState.enemy.avatar;
     }
     
-    // Скрываем выбор противника и показываем кнопку атаки
+    // Скрываем выбор противника и показываем кнопки боя
     const enemySelect = document.getElementById('enemy-select');
     const startBattleBtn = document.getElementById('start-battle-btn');
     const attackButton = document.getElementById('attack-button');
+    const resetBattleBtn = document.getElementById('reset-battle-btn');
+    const newBattleBtn = document.getElementById('new-battle-btn');
     
     if (enemySelect) enemySelect.style.display = 'none';
     if (startBattleBtn) startBattleBtn.style.display = 'none';
     if (attackButton) attackButton.style.display = 'inline-block';
+    if (resetBattleBtn) resetBattleBtn.style.display = 'inline-block';
+    if (newBattleBtn) newBattleBtn.style.display = 'inline-block';
     
     // Сбрасываем состояние боя
     resetBattle();
     
     // Добавляем сообщение в лог
     addToBattleLog('system', '', `Бой начался! ${gameState.playerName} против ${gameState.enemy.name}`, 0, false);
+}
+
+// Сброс текущего боя (продолжение с тем же противником)
+function resetCurrentBattle() {
+    if (gameState.battleStarted && gameState.enemy) {
+        // Сбрасываем здоровье
+        gameState.playerHealth = gameState.playerMaxHealth;
+        gameState.enemyHealth = gameState.enemyMaxHealth;
+        
+        // Сбрасываем выбор зон
+        resetSelection();
+        
+        // Очищаем лог
+        const battleLog = document.getElementById('battle-log');
+        if (battleLog) {
+            battleLog.innerHTML = '';
+        }
+        
+        // Обновляем UI
+        updateUI();
+        
+        // Добавляем сообщение в лог
+        addToBattleLog('system', '', 'Бой сброшен. Новый раунд начался!', 0, false);
+        
+        console.log('Бой сброшен');
+    }
+}
+
+// Начать новый бой (с выбором нового противника)
+function startNewBattle() {
+    // Завершаем текущий бой
+    endBattle();
+    
+    // Показываем выбор противника
+    const enemySelect = document.getElementById('enemy-select');
+    const startBattleBtn = document.getElementById('start-battle-btn');
+    const attackButton = document.getElementById('attack-button');
+    const resetBattleBtn = document.getElementById('reset-battle-btn');
+    const newBattleBtn = document.getElementById('new-battle-btn');
+    
+    if (enemySelect) enemySelect.style.display = 'inline-block';
+    if (startBattleBtn) startBattleBtn.style.display = 'inline-block';
+    if (attackButton) attackButton.style.display = 'none';
+    if (resetBattleBtn) resetBattleBtn.style.display = 'none';
+    if (newBattleBtn) newBattleBtn.style.display = 'none';
+    
+    // Сбрасываем выбор противника
+    if (enemySelect) {
+        enemySelect.value = '';
+        startBattleBtn.disabled = true;
+    }
+    selectedEnemyIndex = null;
+    
+    // Сбрасываем отображение противника
+    const enemyName = document.getElementById('enemy-name');
+    const enemyAvatar = document.getElementById('enemy-avatar');
+    if (enemyName) enemyName.textContent = '???';
+    if (enemyAvatar) enemyAvatar.src = 'enemy-default.png';
+    
+    // Очищаем лог
+    const battleLog = document.getElementById('battle-log');
+    if (battleLog) {
+        battleLog.innerHTML = '';
+    }
+    
+    console.log('Новый бой начат');
 }
 
 // Выбор зоны атаки
@@ -446,7 +528,7 @@ function checkBattleEnd() {
         localStorage.setItem('losses', losses.toString());
         setTimeout(() => {
             alert('Вы проиграли!');
-            endBattle();
+            showBattleEndButtons();
         }, 1000);
     } else if (gameState.enemyHealth <= 0) {
         addToBattleLog('system', '', 'Противник побеждён!', 0, false);
@@ -455,29 +537,34 @@ function checkBattleEnd() {
         localStorage.setItem('wins', wins.toString());
         setTimeout(() => {
             alert('Вы победили!');
-            endBattle();
+            showBattleEndButtons();
         }, 1000);
     }
+}
+
+// Показать кнопки в конце боя
+function showBattleEndButtons() {
+    const attackButton = document.getElementById('attack-button');
+    const resetBattleBtn = document.getElementById('reset-battle-btn');
+    const newBattleBtn = document.getElementById('new-battle-btn');
+    
+    if (attackButton) attackButton.style.display = 'none';
+    if (resetBattleBtn) resetBattleBtn.style.display = 'inline-block';
+    if (newBattleBtn) newBattleBtn.style.display = 'inline-block';
 }
 
 // Завершение боя
 function endBattle() {
     gameState.battleStarted = false;
     
-    // Показываем выбор противника снова
-    const enemySelect = document.getElementById('enemy-select');
-    const startBattleBtn = document.getElementById('start-battle-btn');
+    // Скрываем кнопки боя
     const attackButton = document.getElementById('attack-button');
+    const resetBattleBtn = document.getElementById('reset-battle-btn');
     
-    if (enemySelect) enemySelect.style.display = 'inline-block';
-    if (startBattleBtn) startBattleBtn.style.display = 'inline-block';
     if (attackButton) attackButton.style.display = 'none';
+    if (resetBattleBtn) resetBattleBtn.style.display = 'none';
     
     // Сбрасываем выбор противника
-    if (enemySelect) {
-        enemySelect.value = '';
-        startBattleBtn.disabled = true;
-    }
     selectedEnemyIndex = null;
     
     // Сбрасываем состояние игры
