@@ -41,9 +41,11 @@ body {
   justify-content: center;
   align-items: center;
   height: calc(100vh - 80px);
+  flex-direction: column;
 }
 
 .fight-button {
+  margin-top: 40px;
   width: 300px;
   height: 60px;
   font-size: 32px;
@@ -59,4 +61,18 @@ body {
 .fight-button:hover {
   background-color: #ff3366;
   transform: scale(1.05);
+}
+.home-content img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+  margin-bottom: 20px;
+  border: 2px solid #ff0055;
+  transition: transform 0.3s ease;
+}
+
+.home-content img:hover {
+  transform: scale(1.1);
 }

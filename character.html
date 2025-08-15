@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Character</title>
     <link rel="icon" href="./favicon.webp" type="image/x-icon">
     <link rel="stylesheet" href="styleChar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="top-bar">
@@ -23,15 +24,17 @@
     <div class="avatar-section">
       <img id="mainAvatar" src="./avatar1.gif" alt="Аватар" class="avatar-img">
       <div class="avatar-gallery">
-  <h3>Выбери аватар:</h3>
-  <div class="avatar-options">
-    <img src="./avatar1.gif" alt="Avatar 1" onclick="selectAvatar('avatar1.gif')">
-    <img src="./avatar2.gif" alt="Avatar 2" onclick="selectAvatar('avatar2.gif')">
-    <img src="./avatar3.gif" alt="Avatar 3" onclick="selectAvatar('avatar3.gif')">
-    <img src="./avatar4.gif" alt="Avatar 4" onclick="selectAvatar('avatar4.gif')">
-    <img src="./avatar5.gif" alt="Avatar 5" onclick="selectAvatar('avatar5.gif')">
-  </div>
-</div>
+        <h3>Выбери аватар:</h3>
+        <div class="avatar-options">
+          <img src="./avatar11.jpg" alt="Avatar 1" onclick="selectAvatar('avatar11.jpg')">
+          <img src="./avatar22.png" alt="Avatar 2" onclick="selectAvatar('avatar22.png')">
+          <img src="./avatar33.webp" alt="Avatar 3" onclick="selectAvatar('avatar33.webp')">
+          <img src="./avatar44.jpg" alt="Avatar 4" onclick="selectAvatar('avatar44.jpg')">
+          <img src="./avatar55.jpg" alt="Avatar 5" onclick="selectAvatar('avatar55.jpg')">
+          <img src="./avatar66.jpg" alt="Avatar 6" onclick="selectAvatar('avatar66.jpg')">
+          <img src="./avatar77.webp" alt="Avatar 7" onclick="selectAvatar('avatar77.webp')">
+        </div>
+      </div>
     </div>
 
     <div class="stats">
@@ -46,24 +49,31 @@
     document.getElementById('playerName').textContent = name;
 
     // Загрузка аватара
-    const savedAvatar = localStorage.getItem('characterAvatar') || 'avatar1.gif';
+    const savedAvatar = localStorage.getItem('characterAvatar') || './avatar11.jpg';
     document.getElementById('mainAvatar').src = savedAvatar;
-    document.getElementById('avatarSelect').value = savedAvatar;
 
     // Загрузка статистики
-    document.getElementById('wins').textContent = localStorage.getItem('wins') || '0';
-    document.getElementById('losses').textContent = localStorage.getItem('losses') || '0';
+    const wins = localStorage.getItem('wins') || '0';
+    const losses = localStorage.getItem('losses') || '0';
+    document.getElementById('wins').textContent = wins;
+    document.getElementById('losses').textContent = losses;
 
     // Смена аватара
-    function changeAvatar() {
-      const selected = document.getElementById('avatarSelect').value;
-      localStorage.setItem('characterAvatar', selected);
-      document.getElementById('mainAvatar').src = selected;
-    }
     function selectAvatar(filename) {
-  localStorage.setItem('characterAvatar', filename);
-  document.getElementById('mainAvatar').src = filename;
-}
+      localStorage.setItem('characterAvatar', filename);
+      document.getElementById('mainAvatar').src = filename;
+    }
+
+    // Функция для обновления статистики (можно вызывать при необходимости)
+    function updateStats() {
+      const wins = localStorage.getItem('wins') || '0';
+      const losses = localStorage.getItem('losses') || '0';
+      document.getElementById('wins').textContent = wins;
+      document.getElementById('losses').textContent = losses;
+    }
+
+    // Периодическое обновление статистики
+    setInterval(updateStats, 1000);
   </script>
 </body>
 </html>

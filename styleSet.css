@@ -83,3 +83,309 @@ body {
   font-weight: bold;
   text-shadow: 0 0 5px #ff0000;
 }
+.battle-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.character-panel, .enemy-panel {
+    background: #2a2a2a;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.character-panel {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.enemy-panel {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.battle-controls {
+    grid-column: 1 / 3;
+    grid-row: 2;
+    text-align: center;
+    padding: 20px;
+}
+
+.battle-log {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    background: #2a2a2a;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.health-bar {
+    width: 100%;
+    height: 20px;
+    background: #444;
+    border-radius: 10px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.health-fill {
+    height: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 10px;
+}
+
+.zones {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+.zone-button {
+    padding: 10px 15px;
+    background: #444;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.zone-button:hover {
+    background: #555;
+}
+
+.zone-button.selected {
+    background: #ff0055;
+    transform: scale(1.05);
+}
+
+.zone-button.selected:hover {
+    background: #ff3366;
+}
+
+#attack-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    background: #ff0055;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+}
+
+#attack-button:hover:not(:disabled) {
+    background: #ff3366;
+    transform: scale(1.05);
+}
+
+#attack-button:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.enemy-avatar {
+    text-align: center;
+   
+}
+
+.enemy-avatar img {
+    max-width: 150px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.zone-select h3 {
+    margin: 15px 0 5px 0;
+    color: #ff0055;
+}
+.enemy-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.enemy-selection h2 {
+    color: #ff0055;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+.enemies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.enemy-card {
+    background: #2a2a2a;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.enemy-card:hover {
+    transform: translateY(-5px);
+    border-color: #ff0055;
+    box-shadow: 0 8px 16px rgba(255, 0, 85, 0.4);
+}
+
+.enemy-card.selected {
+    border-color: #00ffff;
+    background: #333;
+}
+
+.enemy-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.enemy-card h3 {
+    color: #ff0055;
+    margin: 10px 0;
+}
+
+.enemy-card .stats {
+    font-size: 14px;
+    color: #ccc;
+    margin: 5px 0;
+}
+
+.enemy-card .stat-value {
+    color: #00ffff;
+    font-weight: bold;
+}
+
+.start-battle-btn {
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-size: 20px;
+    background: #ff0055;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+}
+
+.start-battle-btn:hover:not(:disabled) {
+    background: #ff3366;
+    transform: scale(1.05);
+}
+
+.start-battle-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.battle-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0;
+  gap: 20px;
+}
+
+#enemy-select {
+  width: 300px;
+  height: 45px;
+  font-size: 20px;
+  background-color: #2c2c2c;
+  color: #fff;
+  border: 2px solid #ff0055;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-family: 'Bebas Neue', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+#enemy-select:focus {
+  border-color: #ff3366;
+  outline: none;
+}
+
+.battle-controls button {
+  width: 300px;
+  height: 50px;
+  font-size: 24px;
+  background-color: #ff0055;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Bebas Neue', sans-serif;
+  box-shadow: 0 0 15px rgba(255, 0, 85, 0.6);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.battle-controls button:hover {
+  background-color: #ff3366;
+  transform: scale(1.05);
+}
+
+.battle-controls button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+#player-avatar{
+  width: 150px;
+  height: 300px;
+  margin-left: 160px;
+}
+#enemy-avatar {
+width: 150px;
+  height: 300px;
+}
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #2c2c2c;
+  box-shadow: 0 2px 10px rgba(255, 0, 85, 0.3);
+}
+.title {
+  font-size: 36px;
+  color: #ff0055;
+  text-shadow: 1px 1px #000;
+}
+
+.nav-icons a {
+  font-size: 28px;
+  margin-left: 20px;
+  color: #f5f5f5;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.nav-icons a:hover {
+  transform: scale(1.2);
+  color: #ff0055;
+}
