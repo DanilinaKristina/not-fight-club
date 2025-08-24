@@ -3,30 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="icon" href="./favicon.webp" type="image/x-icon">
-    <link rel="stylesheet" href="styleHome.css">
+    <title>Registration</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="icon" href="./favicon.webp" type="image/x-icon">
+    <link rel="stylesheet" href="styleReg.css">
 </head>
 <body>
-  <header class="top-bar">
-    <div class="title">Home</div>
-    <nav class="nav-icons">
-      <a href="index.html" title="Home">🏠</a>
-      <a href="character.html" title="Character">🧍</a>
-      <a href="setting.html" title="Settings">⚙️</a>
-    </nav>
-  </header>
+<div class="registration">
+  <img src="./favicon.webp" alt="favicon">
+  <h2>Create Your Character</h2>
+  <label class="characterName" for="characterName">Character Name:</label>
+  <input type="text" id="characterName" placeholder="Enter your character's name">
+  <button onclick="createCharacter()">Create Character</button>
+</div>
 
-  <main class="home-content">
-    <img src="./favicon.webp" alt="favicon">
-    <button class="fight-button" onclick="startFight()">FIGHT!</button>
-  </main>
-
-  <script>
-    function startFight() {
-      window.location.href = 'fight.html';
+<script>
+  function createCharacter() {
+    const name = document.getElementById('characterName').value;
+    if (name.trim() !== '') {
+      localStorage.setItem('characterName', name);
+      alert(`Character ${name} created!`);
+      // Перейти на домашнюю страницу
+       window.location.href = 'registration.html'; 
+    } else {
+      alert('Please enter a valid name.');
     }
-  </script>
+  }
+</script>
 </body>
 </html>

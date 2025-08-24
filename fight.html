@@ -6,14 +6,16 @@
     <title>Бойцовский Клуб</title>
     <link rel="icon" href="./favicon.webp" type="image/x-icon">
     <link rel="stylesheet" href="styleSet.css">
+    <link rel="stylesheet" href="styleHome.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="top-bar">
     <div class="title">Batle</div>
     <nav class="nav-icons">
-      <a href="index.html">🏠</a>
-      <a href="character.html">🧍</a>
-      <a href="setting.html">⚙️</a>
+      <a href="registration.html">🏠 Home</a>
+      <a href="character.html">🧍Character</a>
+      <a href="setting.html">⚙️ Setting</a>
     </nav>
   </header>
   <main class="battle-container">
@@ -44,7 +46,7 @@
         <div id="enemy-health" class="health-fill"></div>
       </div>
       <div class="enemy-avatar">
-        <img id="enemy-avatar" src="enemy-default.png" alt="Enemy Avatar" />
+        <img id="enemy-avatar" src="avatar1.gif" alt="Enemy Avatar" />
       </div>
     </section>
 
@@ -54,6 +56,8 @@
       </select>
       <button id="start-battle-btn" disabled>Начать бой</button>
       <button id="attack-button" style="display: none;">Атаковать</button>
+      <button id="reset-battle-btn" style="display: none;">Сброс боя</button>
+      <button id="new-battle-btn" style="display: none;">Новый бой</button>
     </section>
 
     <section class="battle-log">
