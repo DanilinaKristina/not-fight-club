@@ -18,7 +18,7 @@ let gameState = {
     enemyMaxHealth: 0,
     selectedAttack: null,
     selectedDefense: [],
-    battleLog: [],
+    battleLog: [], // Массив для хранения логов
     battleStarted: false
 };
 
@@ -27,12 +27,57 @@ let selectedEnemyIndex = null;
 // Инициализация игры
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM загружен');
+    loadSavedGameState(); // Загружаем сохраненное состояние
     loadPlayerData();
     createZoneButtons();
     populateEnemySelect();
     updateUI();
     setupEventListeners();
+    restoreBattleState(); // Восстанавливаем состояние боя
 });
+
+// Загрузка сохраненного состояния игры
+function loadSavedGameState() {
+    try {
+        const savedState = localStorage.getItem('gameState');
+        if (savedState) {
+            const parsedState = JSON.parse(savedState);
+            // Восстанавливаем основные данные
+            gameState.playerName = parsedState.playerName || gameState.playerName;
+            gameState.playerHealth = parsedState.playerHealth || gameState.playerHealth;
+            gameState.playerMaxHealth = parsedState.playerMaxHealth || gameState.playerMaxHealth;
+            gameState.enemyHealth = parsedState.enemyHealth || gameState.enemyHealth;
+            gameState.enemyMaxHealth = parsedState.enemyMaxHealth || gameState.enemyMaxHealth;
+            gameState.selectedAttack = parsedState.selectedAttack || gameState.selectedAttack;
+            gameState.selectedDefense = parsedState.selectedDefense || gameState.selectedDefense;
+            gameState.battleStarted = parsedState.battleStarted || gameState.battleStarted;
+            
+            // Восстанавливаем enemy объект
+            if (parsedState.enemy) {
+                gameState.enemy = parsedState.enemy;
+            }
+            
+            // Восстанавливаем лог боя
+            if (parsedState.battleLog) {
+                gameState.battleLog = parsedState.battleLog;
+            }
+            
+            console.log('Состояние игры загружено из localStorage');
+        }
+    } catch (error) {
+        console.error('Ошибка загрузки состояния игры:', error);
+    }
+}
+
+// Сохранение состояния игры
+function saveGameState() {
+    try {
+        localStorage.setItem('gameState', JSON.stringify(gameState));
+        console.log('Состояние игры сохранено');
+    } catch (error) {
+        console.error('Ошибка сохранения состояния игры:', error);
+    }
+}
 
 // Загрузка данных игрока
 function loadPlayerData() {
@@ -91,6 +136,28 @@ function createZoneButtons() {
     });
     
     console.log('Кнопки зон созданы');
+    
+    // Восстанавливаем выделение зон если было сохранено
+    restoreZoneSelection();
+}
+
+// Восстановление выделения зон
+function restoreZoneSelection() {
+    // Восстанавливаем выделение атаки
+    if (gameState.selectedAttack) {
+        const attackButton = document.querySelector(`#attack-zones .zone-button[data-zone="${gameState.selectedAttack}"]`);
+        if (attackButton) {
+            attackButton.classList.add('selected');
+        }
+    }
+    
+    // Восстанавливаем выделение защиты
+    gameState.selectedDefense.forEach(zone => {
+        const defenseButton = document.querySelector(`#defense-zones .zone-button[data-zone="${zone}"]`);
+        if (defenseButton) {
+            defenseButton.classList.add('selected');
+        }
+    });
 }
 
 // Заполнение выпадающего списка противниками
@@ -183,6 +250,9 @@ function handleEnemySelect() {
                 enemyAvatarElement.src = 'enemy-default.png';
             }
         }
+        
+        // Сохраняем состояние
+        saveGameState();
     }
 }
 
@@ -231,6 +301,9 @@ function startBattle() {
     
     // Добавляем сообщение в лог
     addToBattleLog('system', '', `Бой начался! ${gameState.playerName} против ${gameState.enemy.name}`, 0, false);
+    
+    // Сохраняем состояние
+    saveGameState();
 }
 
 // Сброс текущего боя (продолжение с тем же противником)
@@ -248,6 +321,7 @@ function resetCurrentBattle() {
         if (battleLog) {
             battleLog.innerHTML = '';
         }
+        gameState.battleLog = []; // Очищаем лог в состоянии
         
         // Обновляем UI
         updateUI();
@@ -256,6 +330,9 @@ function resetCurrentBattle() {
         addToBattleLog('system', '', 'Бой сброшен. Новый раунд начался!', 0, false);
         
         console.log('Бой сброшен');
+        
+        // Сохраняем состояние
+        saveGameState();
     }
 }
 
@@ -295,8 +372,12 @@ function startNewBattle() {
     if (battleLog) {
         battleLog.innerHTML = '';
     }
+    gameState.battleLog = []; // Очищаем лог в состоянии
     
     console.log('Новый бой начат');
+    
+    // Сохраняем состояние
+    saveGameState();
 }
 
 // Выбор зоны атаки
@@ -315,6 +396,9 @@ function selectAttackZone(zone) {
     }
     
     checkAttackButton();
+    
+    // Сохраняем состояние
+    saveGameState();
 }
 
 // Переключение зоны защиты
@@ -342,6 +426,9 @@ function toggleDefenseZone(zone) {
     }
     
     checkAttackButton();
+    
+    // Сохраняем состояние
+    saveGameState();
 }
 
 // Проверка возможности атаки
@@ -387,6 +474,9 @@ function executeBattleRound() {
     
     // Обновление UI
     updateUI();
+    
+    // Сохраняем состояние после каждого раунда
+    saveGameState();
     
     // Проверка конца боя
     setTimeout(checkBattleEnd, 500);
@@ -454,6 +544,12 @@ function addToBattleLog(attacker, target, zone, damage, isCritical) {
     if (attacker === 'system') {
         // Системное сообщение
         logEntry.innerHTML = `<span style="color: #00ffff; font-weight: bold;">${zone}</span>`;
+        // Сохраняем в gameState.battleLog
+        gameState.battleLog.push({
+            type: 'system',
+            message: zone,
+            timestamp: Date.now()
+        });
     } else {
         let logText = `<span class="log-name">${attacker === 'player' ? gameState.playerName : gameState.enemy.name}</span> `;
         logText += `атаковал <span class="log-name">${target}</span> `;
@@ -472,6 +568,16 @@ function addToBattleLog(attacker, target, zone, damage, isCritical) {
         }
         
         logEntry.innerHTML = logText;
+        
+        // Сохраняем в gameState.battleLog
+        gameState.battleLog.push({
+            type: attacker,
+            target: target,
+            zone: zone,
+            damage: damage,
+            critical: isCritical,
+            timestamp: Date.now()
+        });
     }
     
     const battleLog = document.getElementById('battle-log');
@@ -481,6 +587,107 @@ function addToBattleLog(attacker, target, zone, damage, isCritical) {
         // Прокрутка вниз
         battleLog.scrollTop = battleLog.scrollHeight;
     }
+}
+
+// Восстановление лога боя
+function restoreBattleLog() {
+    const battleLog = document.getElementById('battle-log');
+    if (battleLog && gameState.battleLog.length > 0) {
+        battleLog.innerHTML = '';
+        gameState.battleLog.forEach(entry => {
+            const logEntry = document.createElement('p');
+            if (entry.type === 'system') {
+                logEntry.innerHTML = `<span style="color: #00ffff; font-weight: bold;">${entry.message}</span>`;
+            } else {
+                let logText = `<span class="log-name">${entry.type === 'player' ? gameState.playerName : (gameState.enemy ? gameState.enemy.name : 'Противник')}</span> `;
+                logText += `атаковал <span class="log-name">${entry.target}</span> `;
+                logText += `в <span class="log-zone">${Array.isArray(entry.zone) ? entry.zone.join(' и ') : entry.zone}</span> `;
+                
+                if (entry.damage > 0) {
+                    logText += `и нанёс <span class="log-damage">${entry.damage}</span> урона`;
+                    if (entry.critical) {
+                        logText += ` <span class="log-critical">(КРИТИЧЕСКИЙ УДАР!)</span>`;
+                    }
+                } else {
+                    logText += `но удар был заблокирован`;
+                    if (entry.critical) {
+                        logText += ` <span class="log-critical">(КРИТИЧЕСКИЙ УДАР ПРОБИЛ БЛОК!)</span>`;
+                    }
+                }
+                
+                logEntry.innerHTML = logText;
+            }
+            battleLog.appendChild(logEntry);
+        });
+        
+        // Прокрутка вниз
+        battleLog.scrollTop = battleLog.scrollHeight;
+    }
+}
+
+// Восстановление состояния боя
+function restoreBattleState() {
+    if (gameState.battleStarted && gameState.enemy) {
+        // Показываем элементы боя
+        const enemySelect = document.getElementById('enemy-select');
+        const startBattleBtn = document.getElementById('start-battle-btn');
+        const attackButton = document.getElementById('attack-button');
+        const resetBattleBtn = document.getElementById('reset-battle-btn');
+        const newBattleBtn = document.getElementById('new-battle-btn');
+        
+        if (enemySelect) enemySelect.style.display = 'none';
+        if (startBattleBtn) startBattleBtn.style.display = 'none';
+        if (attackButton) attackButton.style.display = 'inline-block';
+        if (resetBattleBtn) resetBattleBtn.style.display = 'inline-block';
+        if (newBattleBtn) newBattleBtn.style.display = 'inline-block';
+        
+        // Обновляем отображение противника
+        const enemyNameElement = document.getElementById('enemy-name');
+        const enemyAvatarElement = document.getElementById('enemy-avatar');
+        
+        if (enemyNameElement) {
+            enemyNameElement.textContent = gameState.enemy.name;
+        }
+        if (enemyAvatarElement) {
+            enemyAvatarElement.src = gameState.enemy.avatar;
+        }
+        
+        // Восстанавливаем лог боя
+        restoreBattleLog();
+        
+        // Восстанавливаем выделение зон
+        restoreZoneSelection();
+        
+        // Проверяем состояние кнопки атаки
+        checkAttackButton();
+        
+        console.log('Состояние боя восстановлено');
+    } else {
+        // Показываем выбор противника
+        const enemySelect = document.getElementById('enemy-select');
+        const startBattleBtn = document.getElementById('start-battle-btn');
+        const attackButton = document.getElementById('attack-button');
+        const resetBattleBtn = document.getElementById('reset-battle-btn');
+        const newBattleBtn = document.getElementById('new-battle-btn');
+        
+        if (enemySelect) enemySelect.style.display = 'inline-block';
+        if (startBattleBtn) startBattleBtn.style.display = 'inline-block';
+        if (attackButton) attackButton.style.display = 'none';
+        if (resetBattleBtn) resetBattleBtn.style.display = 'none';
+        if (newBattleBtn) newBattleBtn.style.display = 'none';
+        
+        // Если был выбран противник, восстанавливаем выбор
+        if (selectedEnemyIndex !== null) {
+            const select = document.getElementById('enemy-select');
+            if (select) {
+                select.value = selectedEnemyIndex;
+                startBattleBtn.disabled = false;
+            }
+        }
+    }
+    
+    // Обновляем UI
+    updateUI();
 }
 
 // Обновление интерфейса
@@ -529,6 +736,7 @@ function checkBattleEnd() {
         setTimeout(() => {
             alert('Вы проиграли!');
             showBattleEndButtons();
+            saveGameState(); // Сохраняем после поражения
         }, 1000);
     } else if (gameState.enemyHealth <= 0) {
         addToBattleLog('system', '', 'Противник побеждён!', 0, false);
@@ -538,6 +746,7 @@ function checkBattleEnd() {
         setTimeout(() => {
             alert('Вы победили!');
             showBattleEndButtons();
+            saveGameState(); // Сохраняем после победы
         }, 1000);
     }
 }
@@ -578,6 +787,9 @@ function endBattle() {
     
     // Сбрасываем выбор зон
     resetSelection();
+    
+    // Сохраняем состояние
+    saveGameState();
 }
 
 // Сброс выбора зон
@@ -606,8 +818,18 @@ function resetBattle() {
     if (battleLog) {
         battleLog.innerHTML = '';
     }
+    gameState.battleLog = []; // Очищаем лог в состоянии
     updateUI();
+    
+    // Сохраняем состояние
+    saveGameState();
 }
 
-// Периодическая проверка обновления данных игрока
-setInterval(updateUI, 1000);
+// Периодическая проверка обновления данных игрока и сохранение состояния
+setInterval(() => {
+    updateUI();
+    saveGameState();
+}, 3000); // Сохраняем каждые 3 секунды
+
+// Сохраняем состояние при закрытии страницы
+window.addEventListener('beforeunload', saveGameState);
